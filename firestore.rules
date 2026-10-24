@@ -1,0 +1,66 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Default deny all access
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isAdmin() {
+      return isSignedIn() && (
+        request.auth.token.email == 'carroceriaypinturanogales@gmail.com' ||
+        exists(/databases/$(database)/documents/admins/$(request.auth.uid))
+      );
+    }
+
+    function isValidId(id) {
+      return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    function isValidQuote(data) {
+      return data.clientName is string && data.clientName.size() > 0 && data.clientName.size() <= 100 &&
+             data.clientPhone is string && data.clientPhone.size() > 0 && data.clientPhone.size() <= 30 &&
+             data.vehicleMake is string && data.vehicleMake.size() <= 50 &&
+             data.vehicleModel is string && data.vehicleModel.size() <= 50 &&
+             data.serviceType is string && data.serviceType.size() <= 100;
+    }
+
+    function isValidReview(data) {
+      return data.authorName is string && data.authorName.size() > 0 && data.authorName.size() <= 100 &&
+             data.comment is string && data.comment.size() > 0 && data.comment.size() <= 600 &&
+             data.rating is number && data.rating >= 1 && data.rating <= 5;
+    }
+
+    // Admins collection
+    match /admins/{adminId} {
+      allow read: if isSignedIn();
+      allow write: if isAdmin();
+    }
+
+    // Quotes collection
+    match /quotes/{quoteId} {
+      allow get: if isValidId(quoteId);
+      allow list: if isAdmin() || (isSignedIn() && resource.data.userId == request.auth.uid);
+      allow create: if isValidId(quoteId) &&
+                      isValidQuote(request.resource.data) &&
+                      request.resource.data.status in ['recibida', 'en_revision'];
+      allow update: if isValidId(quoteId) && (isAdmin() || (isSignedIn() && resource.data.userId == request.auth.uid));
+      allow delete: if isValidId(quoteId) && isAdmin();
+    }
+
+    // Reviews collection
+    match /reviews/{reviewId} {
+      allow read: if true;
+      allow create: if isValidId(reviewId) &&
+                      isSignedIn() &&
+                      request.resource.data.userId == request.auth.uid &&
+                      isValidReview(request.resource.data);
+      allow update, delete: if isValidId(reviewId) && (isAdmin() || (isSignedIn() && resource.data.userId == request.auth.uid));
+    }
+  }
+}

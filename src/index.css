@@ -1,0 +1,52 @@
+@import "tailwindcss";
+
+@layer base {
+  body {
+    font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  }
+}
+
+.font-serif-luxury {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+}
+
+/* Authentic Dark Carbon Fiber Weave Pattern */
+.bg-carbon-weave {
+  background-color: #080a0e;
+  background-image: 
+    linear-gradient(45deg, #101319 25%, transparent 25%, transparent 75%, #101319 75%, #101319),
+    linear-gradient(45deg, #101319 25%, transparent 25%, transparent 75%, #101319 75%, #101319);
+  background-size: 10px 10px;
+  background-position: 0 0, 5px 5px;
+}
+
+.bg-carbon-card {
+  background-color: #0d1016;
+  background-image: 
+    radial-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 0),
+    radial-gradient(rgba(255, 255, 255, 0.02) 1px, #0d1016 0);
+  background-size: 8px 8px;
+  background-position: 0 0, 4px 4px;
+}
+
+/* Custom smooth scroll and scrollbar */
+html {
+  scroll-behavior: smooth;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #0a0a0a;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #262626;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #404040;
+}

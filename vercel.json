@@ -1,0 +1,16 @@
+{
+  "buildCommand": "npm run build",
+  "outputDirectory": "dist",
+  "framework": "vite",
+  "cleanUrls": true,
+  "rewrites": [
+    {
+      "source": "/locator",
+      "destination": "/locator.html"
+    },
+    {
+      "source": "/((?!assets|locator\\.html|.*\\..*).*)",
+      "destination": "/index.html"
+    }
+  ]
+}

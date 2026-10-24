@@ -1,0 +1,126 @@
+{
+  "entities": {
+    "Quote": {
+      "title": "Quote",
+      "description": "Presupuesto o cotización de hojalatería, pintura y detallado automotriz",
+      "type": "object",
+      "properties": {
+        "clientName": {
+          "type": "string",
+          "description": "Nombre del cliente",
+          "maxLength": 100
+        },
+        "clientPhone": {
+          "type": "string",
+          "description": "Teléfono de contacto o WhatsApp del cliente",
+          "maxLength": 30
+        },
+        "clientEmail": {
+          "type": "string",
+          "description": "Correo opcional del cliente",
+          "maxLength": 120
+        },
+        "vehicleMake": {
+          "type": "string",
+          "description": "Marca del vehículo",
+          "maxLength": 50
+        },
+        "vehicleModel": {
+          "type": "string",
+          "description": "Modelo del vehículo",
+          "maxLength": 50
+        },
+        "vehicleYear": {
+          "type": "string",
+          "description": "Año del vehículo",
+          "maxLength": 10
+        },
+        "serviceType": {
+          "type": "string",
+          "description": "Tipo de servicio principal",
+          "maxLength": 100
+        },
+        "description": {
+          "type": "string",
+          "description": "Detalles del daño o requerimiento",
+          "maxLength": 1000
+        },
+        "estimatedRange": {
+          "type": "string",
+          "description": "Rango estimado en MXN calculado en la web",
+          "maxLength": 80
+        },
+        "status": {
+          "type": "string",
+          "description": "Estado de la cotización",
+          "enum": ["recibida", "en_revision", "presupuestada", "en_taller", "entregada"]
+        },
+        "userId": {
+          "type": "string",
+          "description": "UID del usuario solicitante o 'guest'",
+          "maxLength": 128
+        },
+        "adminNotes": {
+          "type": "string",
+          "description": "Notas internas del taller",
+          "maxLength": 500
+        },
+        "createdAt": {
+          "type": "string",
+          "description": "Marca de tiempo de creación"
+        },
+        "updatedAt": {
+          "type": "string",
+          "description": "Marca de tiempo de actualización"
+        }
+      },
+      "required": ["clientName", "clientPhone", "vehicleMake", "vehicleModel", "serviceType", "status"]
+    },
+    "Review": {
+      "title": "Review",
+      "description": "Reseña de clientes sobre el trabajo del taller",
+      "type": "object",
+      "properties": {
+        "authorName": {
+          "type": "string",
+          "description": "Nombre del cliente que reseña",
+          "maxLength": 100
+        },
+        "rating": {
+          "type": "number",
+          "description": "Calificación de 1 a 5 estrellas"
+        },
+        "comment": {
+          "type": "string",
+          "description": "Comentario de la experiencia",
+          "maxLength": 600
+        },
+        "vehicle": {
+          "type": "string",
+          "description": "Vehículo atendido",
+          "maxLength": 80
+        },
+        "userId": {
+          "type": "string",
+          "description": "UID del autor",
+          "maxLength": 128
+        },
+        "createdAt": {
+          "type": "string",
+          "description": "Fecha de la reseña"
+        }
+      },
+      "required": ["authorName", "rating", "comment", "userId"]
+    }
+  },
+  "firestore": {
+    "/quotes/{quoteId}": {
+      "schema": "Quote",
+      "description": "Colección de solicitudes de presupuesto de reparación y pintura"
+    },
+    "/reviews/{reviewId}": {
+      "schema": "Review",
+      "description": "Colección de testimonios y valoraciones de clientes"
+    }
+  }
+}
